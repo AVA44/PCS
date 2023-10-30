@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Stock extends Model
 {
     use HasFactory;
+
+    public function prize() {
+        return $this->belongsTo(Prize::class);
+    }
 }
