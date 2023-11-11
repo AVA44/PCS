@@ -6,12 +6,13 @@
         components: {
             Prize_search_form, Prize_index_table,
         },
+        
         data() {
             return {
                 prizes: {},
             }
         },
-    };
+    }
 </script>
 
 <template>

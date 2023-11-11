@@ -1,12 +1,5 @@
 <script>
-    import Prize_search_form from './prize_search_form.vue';
-
     export default {
-        data() {
-            return {
-
-            }
-        },
         props: {
             prizes: {},
         },
@@ -25,7 +18,7 @@
             <th>次の使用期限</th>
             <th>残り日数</th>
         </tr>
-        <tr v-for='prize in prizes'>
+        <tr v-for='prize in prizes' :key=id>
             <td>{{ prize.name }}</td>
             <td>{{ prize.category }}</td>
             <td>{{ prize.snp_per_box }}個</td>

@@ -40,9 +40,13 @@ class PrizeController extends Controller
                 $prize['limit_at'],
                 $prize['daysLeft']
                 ) = Common::GetThoseDays($stocks, $prize);
+
+            $prize['disabled'] = false;
         }
 
-        $prizes = Common::sortByKey('expired_at', SORT_ASC, $prizes);
+        if (!$prizes->isEmpty()) {
+            $prizes = Common::sortByKey('expired_at', SORT_ASC, $prizes);
+        }
 
         return [
             'prizes' => $prizes,
