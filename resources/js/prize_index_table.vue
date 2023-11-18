@@ -7,7 +7,7 @@
 </script>
 
 <template>
-    <table border='1'>
+    <table border="1">
         <tr>
             <th>景品名</th>
             <th>カテゴリ</th>

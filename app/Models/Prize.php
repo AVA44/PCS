@@ -12,4 +12,8 @@ class Prize extends Model
     public function stocks() {
         return $this->hasMany(Stock::class);
     }
+
+    protected $fillable = [
+        'name', 'category', 'price_per_box', 'snp_per_box', 'img'
+    ];
 }

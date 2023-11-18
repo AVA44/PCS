@@ -16,7 +16,11 @@ use App\Http\Controllers\PrizeController;
 */
 
 Route::get('/', function () {
-    return view('prize_index ');
+    return view('prize_index');
 });
 
 Route::get('/getPrizeJsonData', [PrizeController::class, 'GetPrizeJsonData'])->name('getPrizeJsonData');
+Route::get('/create', function () {
+    return view('prize_create');
+});
+Route::post('/create', [PrizeController::class, 'PrizeCreate'])->name('prizeCreate');

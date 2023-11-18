@@ -52,4 +52,15 @@ class PrizeController extends Controller
             'prizes' => $prizes,
         ];
     }
+
+    public function PrizeCreate(Request $request) {
+        $prize = new Prize();
+        $prize->create([
+            'name' => $request->name,
+            'category' => $request->category,
+            'price_per_box' => $request->pricePerBox,
+            'snp_per_box' => $request->snpPerBox,
+            'img' => $request->img,
+        ]);
+    }
 }

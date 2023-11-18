@@ -10,7 +10,7 @@
     </head>
 
     <body>
-        <div id="prize_index"></div>
+        <div id="prizeIndex"></div>
     </body>
 </html>
 

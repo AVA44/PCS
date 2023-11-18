@@ -41,11 +41,11 @@
     <form>
         <div>
             <p>キーワード：</p>
-            <input type="text" @input="InputSearchKey" />
+            <input type="text" @input='InputSearchKey' />
         </div>
         <div>
             <p>カテゴリ：</p>
-            <select @change="InputSearchCate">
+            <select @change='InputSearchCate'>
                 <option value="">全部</option>
                 <option value="category1">1</option>
                 <option value="category2">2</option>
