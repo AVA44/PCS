@@ -20,7 +20,12 @@ Route::get('/', function () {
 });
 
 Route::get('/getPrizeJsonData', [PrizeController::class, 'GetPrizeJsonData'])->name('getPrizeJsonData');
+Route::get('/getStockJsonData', [PrizeController::class, 'GetStockJsonData'])->name('getStockJsonData');
 Route::get('/create', function () {
     return view('prize_create');
 });
+Route::get('/detail/{id}', [PrizeController::class, 'PrizeDetail'])->name('prizeDetail');
 Route::post('/create', [PrizeController::class, 'PrizeCreate'])->name('prizeCreate');
+Route::post('/stockAdd', [PrizeController::class, 'StockAdd'])->name('stockAdd');
+Route::post('/stockEdit', [PrizeController::class, 'StockEdit'])->name('stockEdit');
+Route::post('/stockDelete', [PrizeController::class, 'StockDelete'])->name('stockDelete');

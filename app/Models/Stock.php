@@ -12,4 +12,8 @@ class Stock extends Model
     public function prize() {
         return $this->belongsTo(Prize::class);
     }
+
+    protected $fillable = [
+        'memo',
+    ];
 }

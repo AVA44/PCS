@@ -1,5 +1,10 @@
 <script>
     export default {
+        data() {
+            return {
+                detailUrl: 'http://localhost/detail/'
+            }
+        },
         props: {
             prizes: {},
         },
@@ -18,8 +23,8 @@
             <th>次の使用期限</th>
             <th>残り日数</th>
         </tr>
-        <tr v-for='prize in prizes' :key=id>
-            <td>{{ prize.name }}</td>
+        <tr v-for='prize in prizes' :key=prize.id>
+            <td><a :href="detailUrl + prize.id">{{ prize.name }}</a></td>
             <td>{{ prize.category }}</td>
             <td>{{ prize.snp_per_box }}個</td>
             <td>{{ prize.price_per_box }}円</td>

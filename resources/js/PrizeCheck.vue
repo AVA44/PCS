@@ -1,10 +1,10 @@
 <script>
-    import Prize_search_form from './prize_search_form.vue';
-    import Prize_check_table from './prize_check_table.vue';
+    import PrizeSearchForm from './PrizeSearchForm.vue';
+    import PrizeCheckTable from './PrizeCheckTable.vue';
 
     export default {
         components: {
-            Prize_search_form, Prize_check_table
+            PrizeSearchForm, PrizeCheckTable,
         },
 
         data() {
@@ -27,11 +27,11 @@
 </script>
 
 <template>
-    <Prize_search_form
+    <PrizeSearchForm
         @submitPrizeData='(val) => prizes = val'
     />
 
-    <Prize_check_table
+    <PrizeCheckTable
         :prizes='prizes'
     />
 </template>

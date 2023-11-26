@@ -4,7 +4,7 @@ namespace App\Libraries;
 
 class Common
 {
-    public static function GetDaysLeft($startDay, $goalDay)
+    public static function GetDaysLeft($startDay, $goalDay) // 使用期限までの日数取得
     {
         $daysLeft = (strtotime($goalDay) - strtotime($startDay)) / 86400;
 
@@ -12,11 +12,11 @@ class Common
     }
 
 
-    public static function GetThoseDays($stockData, $prizeData)
+    public static function GetThoseDaysFirst($stockData, $prizeData) //景品ごとに一番早い賞味期限、使用期限、残り日数を取得
     {
         $first = 9999999999; // $first の初期化
 
-        if (count($stockData) >= 1) {
+        if (count($stockData) >= 1) { // stockデータが存在した場合、一番早いものだけ取得
             foreach ($stockData as $stock) {
                 if ($first > strtotime($stock->expired_at)) {
                     $first = strtotime($stock->expired_at);
@@ -28,7 +28,7 @@ class Common
         }
 
 
-        if ($first != null) {
+        if ($first != null) { // データ作成
             $expired_at = date('Y-m-d', $first);
             $limit_at = date('Y-m-d', strtotime('-45 day', $first));
             $daysLeft = self::GetDaysLeft(date('Y-m-d'), $limit_at);
@@ -40,6 +40,26 @@ class Common
         }
 
         return [$expired_at, $limit_at, $daysLeft];
+    }
+
+
+    public static function GetThoseDays ($stocks) {
+        if (count($stocks) >= 1) {
+            $i = 0;
+            foreach ($stocks as $stock) {
+                $day = strtotime($stock->expired_at);
+
+                $limit_at[] = date('Y-m-d', strtotime('-45 day', $day));
+                $daysLeft[] = self::GetDaysLeft(date('Y-m-d'), $limit_at[$i]);
+
+                $i++;
+            }
+        } else {
+            $limit_at[] = '~~~~';
+            $daysLeft[] = '~~~~';
+        }
+
+        return [$limit_at, $daysLeft];
     }
 
 
