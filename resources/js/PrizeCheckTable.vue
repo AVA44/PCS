@@ -4,18 +4,44 @@
             return {
                 checkedPrizeData: [],
                 checkedPrizeDataId: [],
+                errors: [],
             }
         },
 
         props: {
             prizes: {},
+            opeOrder: '',
         },
+
+        emits: [
+            'GetPrizes'
+        ],
 
         methods: {
             GetCheckedData (prizeData, index) {
                 this.checkedPrizeData.push(prizeData);
                 this.checkedPrizeDataId.push(prizeData.id);
                 prizeData.disabled = true;
+            },
+            CheckDataDestroy () {
+                /** バリデーション */
+                this.errors = [];
+                if (this.checkedPrizeDataId.length == 0) {
+                    this.errors.push('景品を選択してください');
+                    return false;
+                }
+
+                /** データ送受信 */
+                const url = 'http://localhost/destroy';
+                axios.post(url, {
+                    id: this.checkedPrizeDataId,
+                }).then(response => {
+                    this.$emit('GetPrizes');
+                });
+
+                /** データリセット */
+                this.checkedPrizeData = [];
+                this.checkedPrizeDataId = [];
             },
             CancelCheckedData (id) {
                 const index = this.checkedPrizeDataId.indexOf(id);
@@ -32,7 +58,7 @@
                 if (this.prizes[enablePrizeIndex]) {
                     this.prizes[enablePrizeIndex].disabled = false;
                 }
-            }
+            },
         },
 
         watch: {
@@ -74,6 +100,11 @@
             </td>
         </tr>
     </table>
+    <ul v-if='errors'>
+        <li v-for='error in errors'>
+            {{ error }}
+        </li>
+    </ul>
     <table>
         <tr>
             <th>景品名</th>
@@ -86,4 +117,5 @@
             <td><button @click='CancelCheckedData(prizeData.id)'>キャンセル</button></td>
         </tr>
     </table>
+    <button v-if='opeOrder == "delete"' @click="CheckDataDestroy">削除</button>
 </template>

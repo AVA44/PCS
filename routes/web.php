@@ -25,7 +25,9 @@ Route::get('/create', function () {
     return view('prize_create');
 });
 Route::get('/detail/{id}', [PrizeController::class, 'PrizeDetail'])->name('prizeDetail');
+Route::get('/delete', [PrizeController::class, 'PrizeDelete'])->name('prizeDelete');
 Route::post('/create', [PrizeController::class, 'PrizeCreate'])->name('prizeCreate');
+Route::post('/destroy', [PrizeController::class, 'PrizeDestroy'])->name('prizeDestroy');
 Route::post('/stockAdd', [PrizeController::class, 'StockAdd'])->name('stockAdd');
 Route::post('/stockEdit', [PrizeController::class, 'StockEdit'])->name('stockEdit');
 Route::post('/stockDelete', [PrizeController::class, 'StockDelete'])->name('stockDelete');

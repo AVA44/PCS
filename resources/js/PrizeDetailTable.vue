@@ -1,17 +1,15 @@
 <script>
-    import PrizeCheckTable from './PrizeCheckTable.vue'
-
     export default {
-        components: {
-            PrizeCheckTable,
-        },
-
         data() {
             return {
                 stocks: [],
                 checkedData: [],
                 checkedDataId: [],
                 errors: [],
+                newTaste: '',
+                newExpired_at: '',
+                newLimit_at: '',
+                newMemo: '',
             }
         },
 
@@ -72,14 +70,13 @@
                     memo.push(inputMemo[i].value);
                 }
 
-                /** データ送信 */
+                /** データ送受信 */
                 let url = '';
                 if (Operation == 'edit') {
                     url = 'http://localhost/stockEdit';
                 } else if (Operation == 'delete') {
                     url = 'http://localhost/stockDelete';
                 }
-
                 axios.post(url, {
                     submitId: id,
                     submitMemo: memo,
@@ -97,6 +94,44 @@
                         this.stocks[i].disabled = false;
                     }
                 }
+            },
+            SetLimit_at() {
+                let date = new Date(this.newExpired_at);
+                date.setDate(date.getDate() - 30);
+                this.newLimit_at = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+            },
+            StockAdd() {
+
+                /** バリデーション */
+                if (!this.newTaste || !this.newExpired_at) {
+                    this.errors = [];
+                    if (!this.newTaste) {
+                        this.errors.push('味を入力してください');
+                    }
+
+                    if (!this.newExpired_at) {
+                        this.errors.push('賞味期限を入力してください');
+                    }
+
+                    return false;
+                }
+
+                /** データ送受信 */
+                const url = 'http://localhost/stockAdd';
+                axios.post(url, {
+                    submitPrize_id: this.prize_id,
+                    submitTaste: this.newTaste,
+                    submitExpired_at: this.newExpired_at,
+                    submitMemo: this.newMemo,
+                }).then(response => {
+                    this.GetStockJsonData(this.prize_id);
+                })
+
+                /** データリセット */
+                this.newTaste = '';
+                this.newExpired_at = '';
+                this.newLimit_at = '';
+                this.newMemo = '';
             }
         },
 
@@ -126,8 +161,16 @@
                 <button @click='GetCheckedData(stock)' v-bind='{disabled:stock.disabled}'>選択</button>
             </td>
         </tr>
+        <tr>
+            <td>追加する在庫</td>
+            <td><input type="text" v-model="newTaste" placeholder="味：20字以内"/></td>
+            <td><input type="date" v-model="newExpired_at" @change="SetLimit_at" placeholder="賞味期限" /></td>
+            <td>{{ newLimit_at }}</td>
+            <td><input type="text" v-model="newMemo" placeholder="概要：50字以内" /></td>
+            <td></td>
+        </tr>
     </table>
-    <button>在庫追加</button>
+    <button @click="StockAdd">在庫追加</button>
 
     <ul v-if='errors'>
         <li v-for='error in errors'>

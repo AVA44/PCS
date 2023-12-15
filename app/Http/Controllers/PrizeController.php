@@ -13,6 +13,7 @@ class PrizeController extends Controller
 {
     public function GetPrizeJsonData(Request $request) {
 
+        // データ取得
         if ($request->key && $request->cate) {
             $prizes =
             Prize::where('name', 'LIKE', '%' . $request->key . '%')
@@ -33,7 +34,8 @@ class PrizeController extends Controller
             $prizes = Prize::all();
         }
 
-        foreach ($prizes as $prize) {  // 景品ごとに一番早い在庫の情報を追加
+        // 景品ごとに一番早い在庫の情報を追加
+        foreach ($prizes as $prize) {
             $stocks = Prize::find($prize->id)->stocks;
             list(
                 $prize['expired_at'],
@@ -44,9 +46,11 @@ class PrizeController extends Controller
             $prize['disabled'] = false;
         }
 
-        if (!$prizes->isEmpty()) { // 景品を賞味期限順に並び替え
+        // 景品を賞味期限順に並び替え
+        if (!$prizes->isEmpty()) {
             $prizes = Common::sortByKey('expired_at', SORT_ASC, $prizes);
         }
+
 
         return [
             'prizes' => $prizes,
@@ -71,8 +75,16 @@ class PrizeController extends Controller
     }
 
     public function StockAdd(Request $request) {
-        $add = 'add';
-        return $add;
+        $stock = new Stock();
+        $stock->create([
+            'prize_id' => $request->submitPrize_id,
+            'taste' => $request->submitTaste,
+            'expired_at' => $request->submitExpired_at,
+            'memo' => $request->submitMemo,
+        ]);
+
+
+        return true;
     }
 
     public function StockEdit(Request $request) {
@@ -92,7 +104,7 @@ class PrizeController extends Controller
     public function StockDelete(Request $request) {
         $id = $request->submitId;
         $memo = $request->submitMemo;
-        
+
         for ($i = 0; $i < count($id); $i++) {
             $stocks = Stock::find($id[$i]);
             $stocks->delete();
@@ -118,5 +130,20 @@ class PrizeController extends Controller
         return [
             'stocks' => $stocks,
         ];
+    }
+
+    public function PrizeDelete() {
+        return view('prize_delete');
+    }
+
+    public function PrizeDestroy(Request $request) {
+        $prizes = Prize::whereIn('id', $request->id)->get();
+        foreach ($prizes as $prize) {
+            $prize->stocks;
+            $prize->delete();
+        }
+
+
+        return $prizes;
     }
 }

@@ -14,6 +14,6 @@ class Stock extends Model
     }
 
     protected $fillable = [
-        'memo',
+        'prize_id', 'taste', 'expired_at', 'memo',
     ];
 }

@@ -12,6 +12,7 @@
 
         methods: {
             GetPrizeJsonData() {
+                /** 景品データ送受信 */
                 const url = 'http://localhost/getPrizeJsonData';
                 axios.get(url, {
                 params: {
