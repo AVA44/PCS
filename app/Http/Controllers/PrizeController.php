@@ -11,6 +11,8 @@ use Illuminate\Support\Collection;
 
 class PrizeController extends Controller
 {
+
+    // 景品のデータ取得
     public function GetPrizeJsonData(Request $request) {
 
         // データ取得
@@ -51,13 +53,16 @@ class PrizeController extends Controller
             $prizes = Common::sortByKey('expired_at', SORT_ASC, $prizes);
         }
 
+        $categories = Common::GetPrizeCategories();
 
         return [
             'prizes' => $prizes,
+            'categories' => $categories,
         ];
     }
 
-    public function PrizeCreate(Request $request) { // 景品作成
+    // 景品作成
+    public function PostPrizeCreate(Request $request) {
         $prize = new Prize();
         $prize->create([
             'name' => $request->name,
@@ -68,54 +73,33 @@ class PrizeController extends Controller
         ]);
     }
 
-    public function PrizeDetail($id) {
+    // 景品の詳細
+    public function GetPrizeDetail($id) {
         $prizes = Prize::find($id);
-
         return view('prize_detail', compact('id', 'prizes'));
     }
 
-    public function StockAdd(Request $request) {
-        $stock = new Stock();
-        $stock->create([
-            'prize_id' => $request->submitPrize_id,
-            'taste' => $request->submitTaste,
-            'expired_at' => $request->submitExpired_at,
-            'memo' => $request->submitMemo,
-        ]);
+    // 景品削除
+    public function PostPrizeDelete(Request $request) {
 
-
-        return true;
-    }
-
-    public function StockEdit(Request $request) {
-        $id = $request->submitId;
-        $memo = $request->submitMemo;
-
-        for ($i = 0; $i < count($id); $i++) {
-            $stocks = Stock::find($id[$i]);
-            $stocks->update([
-                'memo' => $memo[$i],
-            ]);
-        };
+        // 景品の情報取得、削除
+        $prizes = Prize::whereIn('id', $request->id)->get();
+        foreach ($prizes as $prize) {
+            $prize->stocks;
+            $prize->delete();
+        }
 
         return true;
     }
 
-    public function StockDelete(Request $request) {
-        $id = $request->submitId;
-        $memo = $request->submitMemo;
-
-        for ($i = 0; $i < count($id); $i++) {
-            $stocks = Stock::find($id[$i]);
-            $stocks->delete();
-        };
-
-        return true;
-    }
-
+    // 指定した景品の在庫の情報を全取得
     public function GetStockJsonData(Request $request) {
+
+        // 景品のidから在庫のデータを取得
         $stocks = Prize::find($request->prizeId)->stocks;
 
+        // 使用期限、残り日数を作成
+        // ボタンに付与するdisabled属性の値を付与
         list($thoseDays['limit_at'], $thoseDays['daysLeft']) = Common::GetThoseDays($stocks);
         $i = 0;
         foreach ($stocks as $stock) {
@@ -132,18 +116,47 @@ class PrizeController extends Controller
         ];
     }
 
-    public function PrizeDelete() {
-        return view('prize_delete');
+    // 在庫追加
+    public function PostStockAdd(Request $request) {
+        $stock = new Stock();
+        $stock->create([
+            'prize_id' => $request->submitPrize_id,
+            'taste' => $request->submitTaste,
+            'expired_at' => $request->submitExpired_at,
+            'memo' => $request->submitMemo,
+        ]);
+
+        return true;
     }
 
-    public function PrizeDestroy(Request $request) {
-        $prizes = Prize::whereIn('id', $request->id)->get();
-        foreach ($prizes as $prize) {
-            $prize->stocks;
-            $prize->delete();
-        }
+    // 在庫の概要編集
+    public function PostStockEdit(Request $request) {
 
+        // 変更するデータのid、変更内容を配列で取得
+        $id = $request->submitId;
+        $memo = $request->submitMemo;
 
-        return $prizes;
+        for ($i = 0; $i < count($id); $i++) {
+            $stocks = Stock::find($id[$i]);
+            $stocks->update([
+                'memo' => $memo[$i],
+            ]);
+        };
+
+        return true;
+    }
+
+    // 在庫削除
+    public function PostStockDelete(Request $request) {
+
+        // 削除するデータのidを配列で取得
+        $id = $request->submitId;
+
+        for ($i = 0; $i < count($id); $i++) {
+            $stocks = Stock::find($id[$i]);
+            $stocks->delete();
+        };
+
+        return true;
     }
 }

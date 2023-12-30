@@ -5,6 +5,7 @@
                 searchKey: '',
                 searchCate: '',
                 prizes: {},
+                categories: {},
             }
         },
 
@@ -21,6 +22,7 @@
                 }
                 }).then(response => {
                     this.prizes = response.data.prizes
+                    this.categories = response.data.categories
                     this.$emit('submitPrizeData', this.prizes);
                 });
             },
@@ -39,21 +41,43 @@
 </script>
 
 <template>
-    <form>
-        <div>
-            <p>キーワード：</p>
-            <input type="text" @input='InputSearchKey' />
-        </div>
-        <div>
-            <p>カテゴリ：</p>
-            <select @change='InputSearchCate'>
-                <option value="">全部</option>
-                <option value="category1">1</option>
-                <option value="category2">2</option>
-                <option value="category3">3</option>
-                <option value="category4">4</option>
-            </select>
-        </div>
-    </form>
-    <button @click='GetPrizeJsonData'>検索</button>
+    <div id="searchFormContainer">
+        <form>
+            <div class="searchFormContents">
+                <p class="searchFormInputLabel">キーワード：</p>
+                <input class="searchFormInput" type="text" @input='InputSearchKey' />
+            </div>
+            <div class="searchFormContents">
+                <p class="searchFormInputLabel">カ テ ゴ リ：</p>
+                <select class="searchFormInput" @change='InputSearchCate'>
+                    <option value="">全部</option>
+                    <option v-for='category in categories' :value=category>{{ category }}</option>
+                </select>
+            </div>
+        </form>
+        <button @click='GetPrizeJsonData'>検索</button>
+    </div>
 </template>
+
+<style>
+    #searchFormContainer {
+        margin-bottom: 1rem;
+    }
+
+    .searchFormContents {
+        display: flex;
+        align-items: center;
+        width: 20rem;
+        height: 2rem;
+        margin: 2rem 0;
+    }
+
+    .searchFormInputLabel {
+        text-align: right;
+        width: 30%;
+    }
+
+    .searchFormInput {
+        width: 40%;
+    }
+</style>

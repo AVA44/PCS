@@ -2,7 +2,9 @@
     export default {
         data() {
             return {
-                detailUrl: 'http://localhost/detail/'
+                detailUrl: 'http://localhost/detail/',
+                limit: 'limit',
+                closeLimit: 'scloseLimit',
             }
         },
         props: {
@@ -23,7 +25,11 @@
             <th>次の使用期限</th>
             <th>残り日数</th>
         </tr>
-        <tr v-for='prize in prizes' :key=prize.id>
+        <tr
+            v-for='prize in prizes'
+            :key=prize.id
+            :class='{ limit: prize.daysLeft < 0, closeLimit: prize.daysLeft >= 0 && prize.daysLeft < 30 }'
+        >
             <td><a :href="detailUrl + prize.id">{{ prize.name }}</a></td>
             <td>{{ prize.category }}</td>
             <td>{{ prize.snp_per_box }}個</td>
@@ -35,3 +41,19 @@
         </tr>
     </table>
 </template>
+
+<style>
+    table {
+        width: 100%;
+        text-align: center;
+        margin: 2rem 0;
+    }
+
+    .closeLimit {
+        background-color: #ffb9b9;
+    }
+
+    .limit {
+        background-color: #9f9f9f;
+    }
+</style>

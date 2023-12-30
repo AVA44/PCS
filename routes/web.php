@@ -14,20 +14,25 @@ use App\Http\Controllers\PrizeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
+Route::get('/', function() {
+    return view('template');
+});
+Route::get('/index', function () {
     return view('prize_index');
 });
-
-Route::get('/getPrizeJsonData', [PrizeController::class, 'GetPrizeJsonData'])->name('getPrizeJsonData');
-Route::get('/getStockJsonData', [PrizeController::class, 'GetStockJsonData'])->name('getStockJsonData');
 Route::get('/create', function () {
     return view('prize_create');
 });
-Route::get('/detail/{id}', [PrizeController::class, 'PrizeDetail'])->name('prizeDetail');
-Route::get('/delete', [PrizeController::class, 'PrizeDelete'])->name('prizeDelete');
-Route::post('/create', [PrizeController::class, 'PrizeCreate'])->name('prizeCreate');
-Route::post('/destroy', [PrizeController::class, 'PrizeDestroy'])->name('prizeDestroy');
-Route::post('/stockAdd', [PrizeController::class, 'StockAdd'])->name('stockAdd');
-Route::post('/stockEdit', [PrizeController::class, 'StockEdit'])->name('stockEdit');
-Route::post('/stockDelete', [PrizeController::class, 'StockDelete'])->name('stockDelete');
+Route::get('/delete', function() {
+    return view('prize_delete');
+});
+Route::get('/detail/{id}', [PrizeController::class, 'GetPrizeDetail'])->name('prizeDetail');
+
+Route::get('/getPrizeJsonData', [PrizeController::class, 'GetPrizeJsonData'])->name('getPrizeJsonData');
+Route::get('/getStockJsonData', [PrizeController::class, 'GetStockJsonData'])->name('getStockJsonData');
+
+Route::post('/create', [PrizeController::class, 'PostPrizeCreate'])->name('prizeCreate');
+Route::post('/delete', [PrizeController::class, 'PostPrizeDelete'])->name('prizeDelete');
+Route::post('/stockAdd', [PrizeController::class, 'PostStockAdd'])->name('stockAdd');
+Route::post('/stockEdit', [PrizeController::class, 'PostStockEdit'])->name('stockEdit');
+Route::post('/stockDelete', [PrizeController::class, 'PostStockDelete'])->name('stockDelete');

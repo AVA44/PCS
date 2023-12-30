@@ -2,7 +2,9 @@
     export default {
         data () {
             return {
-                formElementClass: 'createFormElement',
+                formContentsClass: 'createFormContents',
+                formLabelClass: 'createFormInputLabel',
+                formInputClass: 'createFormInput',
                 inputName: 'name',
                 inputCate: 'category',
                 inputPPB: 'pricePerBox',
@@ -89,46 +91,82 @@
 </script>
 
 <template>
-バリデーションの作成
-画像以外必須
-    <form method="post" action="http://localhost/create">
-        <div :class="formElementClass">
-            <label :for="inputName">景品名：</label>
-            <input :id="inputName" v-model='submitName' type="text" placeholder="30字以内"/>
-        </div>
-        <div :class="formElementClass">
-            <label :for="inputCate">カテゴリ：</label>
-            <input :id="inputCate" v-model='submitCate' type="text" placeholder="14字以内" />
-        </div>
-        <div :class="formElementClass">
-            <label :for="inputPPB">箱単価：</label>
-            <input :id="inputPPB" v-model='submitPPB' type="number" min="0" />
-        </div>
-        <div :class="formElementClass">
-            <label :for="inputSPB">入り数：</label>
-            <input :id="inputSPB" v-model='submitSPB' type="number" min="0" />
-        </div>
-        <div :class="formElementClass">
-            <label :for="inputImg">画像：</label>
-            <input :id="inputImg" @change='ImageToBinary($event)' type="file" />
-            <img :src='submitImg' />
-        </div>
-    </form>
-    <button @click='CreatePrize'>作成</button>
+    <div id="createContainer">
+        <form method="post" action="http://localhost/create">
+            <div :class="formContentsClass">
+                <label :for="inputName" :class="formLabelClass">景品名：</label>
+                <input :id="inputName" :class="formInputClass" v-model='submitName' type="text" placeholder="30字以内"/>
+            </div>
+            <div :class="formContentsClass">
+                <label :for="inputCate" :class="formLabelClass">カテゴリ：</label>
+                <input :id="inputCate" :class="formInputClass" v-model='submitCate' type="text" placeholder="14字以内" />
+            </div>
+            <div :class="formContentsClass">
+                <label :for="inputPPB" :class="formLabelClass">箱単価：</label>
+                <input :id="inputPPB" :class="formInputClass" v-model='submitPPB' type="number" min="0" />
+            </div>
+            <div :class="formContentsClass">
+                <label :for="inputSPB" :class="formLabelClass">入り数：</label>
+                <input :id="inputSPB" :class="formInputClass" v-model='submitSPB' type="number" min="0" />
+            </div>
+            <div :class="formContentsClass" v-if='false'>
+                <label :for="inputImg" :class="formLabelClass">画像：</label>
+                <input :id="inputImg" :class="formInputClass" @change='ImageToBinary($event)' type="file" />
+                <img :src='submitImg' />
+            </div>
+        </form>
+        <button @click='CreatePrize'>作成</button>
 
-    <ul v-if='errors'>
-        <li v-for='error in errors'>
-            {{ error }}
-        </li>
-    </ul>
+        <ul v-if='errors'>
+            <li v-for='error in errors'>
+                {{ error }}
+            </li>
+        </ul>
 
-    <table>
-        <tr>作成された景品</tr>
-        <tr v-for="(prize, index) in createdPrizes" :key=index>
-            <td>{{ prize.name }}</td>
-            <td>{{ prize.category }}</td>
-            <td>{{ prize.pricePerBox }}</td>
-            <td>{{ prize.snpPerBox }}</td>
-        </tr>
-    </table>
+        <table border="1">
+            <colgroup>
+                <col width="40%">
+                <col width="25%">
+                <col width="25%">
+                <col width="10%">
+            </colgroup>
+            <tr>
+                <td colspan="5">作成された景品</td>
+            </tr>
+            <tr v-if='createdPrizes.length == 0'>
+                <td>　</td>
+                <td>　</td>
+                <td>　</td>
+                <td>　</td>
+            </tr>
+            <tr v-for="(prize, index) in createdPrizes" :key=index>
+                <td>{{ prize.name }}</td>
+                <td>{{ prize.category }}</td>
+                <td>{{ prize.pricePerBox }}</td>
+                <td>{{ prize.snpPerBox }}</td>
+            </tr>
+        </table>
+    </div>
 </template>
+
+<style>
+    #createContainer {
+        margin: 2rem 1rem;
+    }
+
+    .createFormContents {
+        width: 25%;
+        margin: 0.5rem 0;
+    }
+
+    .createFormInputLabel {
+        display: inline-block;
+        text-align: right;
+        width: 35%;
+    }
+
+    .createFormInput {
+        width: 65%;
+    }
+
+</style>

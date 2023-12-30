@@ -2,6 +2,8 @@
 
 namespace App\Libraries;
 
+use App\Models\Prize;
+
 class Common
 {
     public static function GetDaysLeft($startDay, $goalDay) // 使用期限までの日数取得
@@ -30,7 +32,7 @@ class Common
 
         if ($first != null) { // データ作成
             $expired_at = date('Y-m-d', $first);
-            $limit_at = date('Y-m-d', strtotime('-45 day', $first));
+            $limit_at = date('Y-m-d', strtotime('-30 day', $first));
             $daysLeft = self::GetDaysLeft(date('Y-m-d'), $limit_at);
 
         } else {
@@ -49,7 +51,7 @@ class Common
             foreach ($stocks as $stock) {
                 $day = strtotime($stock->expired_at);
 
-                $limit_at[] = date('Y-m-d', strtotime('-45 day', $day));
+                $limit_at[] = date('Y-m-d', strtotime('-30 day', $day));
                 $daysLeft[] = self::GetDaysLeft(date('Y-m-d'), $limit_at[$i]);
 
                 $i++;
@@ -76,6 +78,20 @@ class Common
         $array = collect($array);
 
         return $array;
+    }
+
+    public static function GetPrizeCategories () {
+        $category = Prize::select('category')->get();
+
+        $categories = [];
+        for ($i = 0; $i < count($category); $i++) {
+            $categories[] = $category[$i]['category'];;
+        };
+
+        $categories = array_unique($categories);
+        sort($categories);
+
+        return $categories;
     }
 
 }

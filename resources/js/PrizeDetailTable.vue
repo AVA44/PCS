@@ -142,60 +142,75 @@
 </script>
 
 <template>
-    <table border="1">
-        <tr>
-            <th>識別id</th>
-            <th>味</th>
-            <th>賞味期限</th>
-            <th>使用期限</th>
-            <th>概要</th>
-            <th>選択</th>
-        </tr>
-        <tr v-for='(stock, index) in stocks'>
-            <td>{{ stock.id }}</td>
-            <td>{{ stock.taste }}</td>
-            <td>{{ stock.expired_at }}</td>
-            <td>{{ stock.limit_at }}</td>
-            <td>{{ stock.memo }}</td>
-            <td>
-                <button @click='GetCheckedData(stock)' v-bind='{disabled:stock.disabled}'>選択</button>
-            </td>
-        </tr>
-        <tr>
-            <td>追加する在庫</td>
-            <td><input type="text" v-model="newTaste" placeholder="味：20字以内"/></td>
-            <td><input type="date" v-model="newExpired_at" @change="SetLimit_at" placeholder="賞味期限" /></td>
-            <td>{{ newLimit_at }}</td>
-            <td><input type="text" v-model="newMemo" placeholder="概要：50字以内" /></td>
-            <td></td>
-        </tr>
-    </table>
-    <button @click="StockAdd">在庫追加</button>
+    <div id="detailContainer">
+        <table border="1">
+            <tr>
+                <th>識別id</th>
+                <th>味</th>
+                <th>賞味期限</th>
+                <th>使用期限</th>
+                <th>概要</th>
+                <th>選択</th>
+            </tr>
+            <tr v-for='(stock, index) in stocks'>
+                <td>{{ stock.id }}</td>
+                <td>{{ stock.taste }}</td>
+                <td>{{ stock.expired_at }}</td>
+                <td>{{ stock.limit_at }}</td>
+                <td>{{ stock.memo }}</td>
+                <td>
+                    <button @click='GetCheckedData(stock)' v-bind='{disabled:stock.disabled}'>選択</button>
+                </td>
+            </tr>
+            <tr>
+                <td>追加する在庫</td>
+                <td><input type="text" v-model="newTaste" placeholder="味：20字以内"/></td>
+                <td><input type="date" v-model="newExpired_at" @change="SetLimit_at" placeholder="賞味期限" /></td>
+                <td>{{ newLimit_at }}</td>
+                <td><input type="text" v-model="newMemo" placeholder="概要：50字以内" /></td>
+                <td></td>
+            </tr>
+        </table>
+        <button @click="StockAdd">在庫追加</button>
 
-    <ul v-if='errors'>
-        <li v-for='error in errors'>
-            {{ error }}
-        </li>
-    </ul>
+        <ul v-if='errors'>
+            <li v-for='error in errors'>
+                {{ error }}
+            </li>
+        </ul>
 
-    <table>
-        <tr>
-            <th>識別id</th>
-            <th>味</th>
-            <th>賞味期限</th>
-            <th>概要</th>
-            <th>キャンセル</th>
-        </tr>
-        <tr v-for='(data, index) in checkedData'>
-            <td><input type="hidden" ref="id" :value="data.id" />{{ data.id }}</td>
-            <td>{{ data.taste }}</td>
-            <td>{{ data.expired_at }}</td>
-            <td><input type="text" ref="memo" :placeholder="data.memo" /></td>
-            <td><button @click='CancelCheckedData(data.id)'>キャンセル</button></td>
-        </tr>
-    </table>
+        <table border="1">
+            <colgroup>
+                <col width="10%">
+                <col width="20%">
+                <col width="20%">
+                <col width="30%">
+                <col width="20%">
+            </colgroup>
+            <tr>
+                <th>識別id</th>
+                <th>味</th>
+                <th>賞味期限</th>
+                <th>概要</th>
+                <th>キャンセル</th>
+            </tr>
+            <tr v-if='checkedData.length == 0'>
+                <td>　</td>
+                <td>　</td>
+                <td>　</td>
+                <td>　</td>
+                <td>　</td>
+            </tr>
+            <tr v-for='(data, index) in checkedData'>
+                <td><input type="hidden" ref="id" :value="data.id" />{{ data.id }}</td>
+                <td>{{ data.taste }}</td>
+                <td>{{ data.expired_at }}</td>
+                <td><input type="text" ref="memo" :placeholder="data.memo" /></td>
+                <td><button @click='CancelCheckedData(data.id)'>キャンセル</button></td>
+            </tr>
+        </table>
 
-    <button @click="DataOperation('edit')">概要編集</button>
-    <button @click="DataOperation('delete')">在庫削除</button>
-
+        <button @click="DataOperation('edit')">概要編集</button>
+        <button @click="DataOperation('delete')">在庫削除</button>
+    </div>
 </template>

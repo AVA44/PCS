@@ -32,7 +32,7 @@
                 }
 
                 /** データ送受信 */
-                const url = 'http://localhost/destroy';
+                const url = 'http://localhost/delete';
                 axios.post(url, {
                     id: this.checkedPrizeDataId,
                 }).then(response => {
@@ -74,48 +74,60 @@
 </script>
 
 <template>
-    <table border='1'>
-        <tr>
-            <th>景品名</th>
-            <th>カテゴリ</th>
-            <th>入り数</th>
-            <th>箱単価</th>
-            <th>単位単価</th>
-            <th>次の賞味期限</th>
-            <th>次の使用期限</th>
-            <th>残り日数</th>
-            <th>選択</th>
-        </tr>
-        <tr v-for='(prize, index) in prizes' :key='prize.id'>
-            <td>{{ prize.name }}</td>
-            <td>{{ prize.category }}</td>
-            <td>{{ prize.snp_per_box }}個</td>
-            <td>{{ prize.price_per_box }}円</td>
-            <td>{{ Math.round(prize.price_per_box / prize.snp_per_box) }}円</td>
-            <td>{{ prize.expired_at }}</td>
-            <td>{{ prize.limit_at }}</td>
-            <td>{{ prize.daysLeft }}日</td>
-            <td>
-                <button @click='GetCheckedData(prize, index)' v-bind='{disabled:prize.disabled}'>選択</button>
-            </td>
-        </tr>
-    </table>
-    <ul v-if='errors'>
-        <li v-for='error in errors'>
-            {{ error }}
-        </li>
-    </ul>
-    <table>
-        <tr>
-            <th>景品名</th>
-            <th>カテゴリ</th>
-            <th>キャンセル</th>
-        </tr>
-        <tr v-for='(prizeData, index) in checkedPrizeData'>
-            <td>{{ prizeData.name }}</td>
-            <td>{{ prizeData.category }}</td>
-            <td><button @click='CancelCheckedData(prizeData.id)'>キャンセル</button></td>
-        </tr>
-    </table>
-    <button v-if='opeOrder == "delete"' @click="CheckDataDestroy">削除</button>
+    <div class="checkTableContainer">
+        <table border='1'>
+            <tr>
+                <th>景品名</th>
+                <th>カテゴリ</th>
+                <th>入り数</th>
+                <th>箱単価</th>
+                <th>単位単価</th>
+                <th>次の賞味期限</th>
+                <th>次の使用期限</th>
+                <th>残り日数</th>
+                <th>選択</th>
+            </tr>
+            <tr v-for='(prize, index) in prizes' :key='prize.id'>
+                <td>{{ prize.name }}</td>
+                <td>{{ prize.category }}</td>
+                <td>{{ prize.snp_per_box }}個</td>
+                <td>{{ prize.price_per_box }}円</td>
+                <td>{{ Math.round(prize.price_per_box / prize.snp_per_box) }}円</td>
+                <td>{{ prize.expired_at }}</td>
+                <td>{{ prize.limit_at }}</td>
+                <td>{{ prize.daysLeft }}日</td>
+                <td>
+                    <button @click='GetCheckedData(prize, index)' v-bind='{disabled:prize.disabled}'>選択</button>
+                </td>
+            </tr>
+        </table>
+        <ul v-if='errors'>
+            <li v-for='error in errors'>
+                {{ error }}
+            </li>
+        </ul>
+        <table border="1">
+            <colgroup>
+                <col width="50%">
+                <col width="40%">
+                <col width="10%">
+            </colgroup>
+            <tr>
+                <th>景品名</th>
+                <th>カテゴリ</th>
+                <th>キャンセル</th>
+            </tr>
+            <tr v-if='checkedPrizeData.length == 0'>
+                <td>　</td>
+                <td>　</td>
+                <td>　</td>
+            </tr>
+            <tr v-for='(prizeData, index) in checkedPrizeData'>
+                <td>{{ prizeData.name }}</td>
+                <td>{{ prizeData.category }}</td>
+                <td><button @click='CancelCheckedData(prizeData.id)'>キャンセル</button></td>
+            </tr>
+        </table>
+        <button v-if='opeOrder == "delete"' @click="CheckDataDestroy">削除</button>
+    </div>
 </template>
