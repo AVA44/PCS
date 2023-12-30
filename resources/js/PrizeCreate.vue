@@ -2,6 +2,7 @@
     export default {
         data () {
             return {
+                categories: [],
                 formContentsClass: 'createFormContents',
                 formLabelClass: 'createFormInputLabel',
                 formInputClass: 'createFormInput',
@@ -18,6 +19,10 @@
                 createdPrizes: [],
                 errors: [],
             }
+        },
+
+        props: {
+            inputCategories: {},
         },
 
         methods: {
@@ -87,6 +92,10 @@
                 }
             }
         },
+
+        mounted() {
+            this.categories = JSON.parse(this.inputCategories);
+        }
     }
 </script>
 
@@ -99,7 +108,11 @@
             </div>
             <div :class="formContentsClass">
                 <label :for="inputCate" :class="formLabelClass">カテゴリ：</label>
-                <input :id="inputCate" :class="formInputClass" v-model='submitCate' type="text" placeholder="14字以内" />
+                <input :id="inputCate" :class="formInputClass" list="data-list" v-model='submitCate' type="text" placeholder="14字以内" />
+
+                <datalist id="data-list">
+                    <option v-for='category in categories'>{{ category }}</option>
+                </datalist>
             </div>
             <div :class="formContentsClass">
                 <label :for="inputPPB" :class="formLabelClass">箱単価：</label>

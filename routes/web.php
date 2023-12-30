@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
 use App\Http\Controllers\PrizeController;
+use App\Libraries\Common;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,8 @@ Route::get('/index', function () {
     return view('prize_index');
 });
 Route::get('/create', function () {
-    return view('prize_create');
+    $categories = Common::GetPrizeCategories();
+    return view('prize_create', compact('categories'));
 });
 Route::get('/delete', function() {
     return view('prize_delete');
