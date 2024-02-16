@@ -15,8 +15,9 @@ use App\Libraries\Common;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/', function() {
-    return view('template');
+    return view('prize_index');
 });
 Route::get('/index', function () {
     return view('prize_index');

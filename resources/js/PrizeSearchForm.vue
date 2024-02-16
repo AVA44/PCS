@@ -14,7 +14,7 @@
         methods: {
             GetPrizeJsonData() {
                 /** 景品データ送受信 */
-                const url = 'http://localhost/getPrizeJsonData';
+                const url = 'https://pcs-app.fly.dev/getPrizeJsonData';
                 axios.get(url, {
                 params: {
                     key: this.searchKey,

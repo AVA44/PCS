@@ -19,7 +19,7 @@
 
         methods: {
             GetStockJsonData(id) {
-                const url = 'http://localhost/getStockJsonData';
+                const url = 'https://pcs-app.fly.dev/getStockJsonData';
                 axios.get(url, {
                 params: {
                     prizeId: id,
@@ -73,9 +73,9 @@
                 /** データ送受信 */
                 let url = '';
                 if (Operation == 'edit') {
-                    url = 'http://localhost/stockEdit';
+                    url = 'https://pcs-app.fly.dev/stockEdit';
                 } else if (Operation == 'delete') {
-                    url = 'http://localhost/stockDelete';
+                    url = 'https://pcs-app.fly.dev/stockDelete';
                 }
                 axios.post(url, {
                     submitId: id,
@@ -117,7 +117,7 @@
                 }
 
                 /** データ送受信 */
-                const url = 'http://localhost/stockAdd';
+                const url = 'https://pcs-app.fly.dev/stockAdd';
                 axios.post(url, {
                     submitPrize_id: this.prize_id,
                     submitTaste: this.newTaste,

@@ -32,7 +32,7 @@
                 }
 
                 /** データ送受信 */
-                const url = 'http://localhost/delete';
+                const url = 'https://pcs-app.fly.dev/delete';
                 axios.post(url, {
                     id: this.checkedPrizeDataId,
                 }).then(response => {

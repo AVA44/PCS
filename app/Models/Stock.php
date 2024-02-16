@@ -9,6 +9,8 @@ class Stock extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     public function prize() {
         return $this->belongsTo(Prize::class);
     }

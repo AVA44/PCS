@@ -2,7 +2,7 @@
     export default {
         data() {
             return {
-                detailUrl: 'http://localhost/detail/',
+                detailUrl: 'https://pcs-app.fly.dev/detail/',
                 limit: 'limit',
                 closeLimit: 'scloseLimit',
             }

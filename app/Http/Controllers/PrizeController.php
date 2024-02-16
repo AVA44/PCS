@@ -14,8 +14,8 @@ class PrizeController extends Controller
 
     // 景品のデータ取得
     public function GetPrizeJsonData(Request $request) {
-
         // データ取得
+
         if ($request->key && $request->cate) {
             $prizes =
             Prize::where('name', 'LIKE', '%' . $request->key . '%')
@@ -35,7 +35,7 @@ class PrizeController extends Controller
         } else {
             $prizes = Prize::all();
         }
-
+        
         // 景品ごとに一番早い在庫の情報を追加
         foreach ($prizes as $prize) {
             $stocks = Prize::find($prize->id)->stocks;

@@ -49,8 +49,7 @@
                     return false;
                 }
 
-
-                const url = 'http://localhost/create';
+                const url = 'https://pcs-app.fly.dev/create';
                 axios.post(url, {
                     name: this.submitName,
                     category: this.submitCate,
@@ -101,7 +100,7 @@
 
 <template>
     <div id="createContainer">
-        <form method="post" action="http://localhost/create">
+        <form method="post" action="https://pcs-app.fly.dev/create">
             <div :class="formContentsClass">
                 <label :for="inputName" :class="formLabelClass">景品名：</label>
                 <input :id="inputName" :class="formInputClass" v-model='submitName' type="text" placeholder="30字以内"/>

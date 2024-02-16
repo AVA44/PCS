@@ -13,8 +13,23 @@ class PrizeSeeder extends Seeder
      *
      * @return void
      */
+
     public function run()
     {
-        Prize::factory()->count(50)->create();
+        $prize_data = [];
+        $search_key = ['-ice-', '-cookie-', '-biscuit-', '-cake-', '-tart', '-chocolate-', '-pie-'];
+        $category = ['A', 'B', 'C', 'D', 'E'];
+
+        // データ保存
+        for ($i = 1; $i <= 50; $i++) {
+
+            Prize::insert([
+                'name' => 'prize' . $search_key[array_rand($search_key, 1)] . $i,
+                'category' => 'category' . $category[array_rand($category, 1)],
+                'price_per_box' => rand(30000, 70000),// 一箱の値段
+                'snp_per_box' => rand(30, 300),// 一箱に入ってる数
+                'img' => '',// 画像のバイナリデータ
+            ]);
+        };
     }
 }
